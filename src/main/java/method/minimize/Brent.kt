@@ -2,6 +2,8 @@ package method.minimize
 
 import math.ScalarFunction
 import math.matrix.Vector
+import java.util.function.Function
+import java.util.stream.Collectors
 
 class Brent {
     fun minimize(
@@ -10,10 +12,9 @@ class Brent {
         d: Vector,
         inaccuracy: Double
     ): Double {
-        return minimize({lambda : Double -> function.calc(x + d * lambda)}, 2 * inaccuracy)
-    }
-
-    private fun minimize(function: (Double) -> Double, x: Double): Double {
-        TODO("add Brent method from lab1")
+        return JavaBrent().minimize(
+            { lambda: Double -> function.calc(x + d * lambda) },
+            2 * inaccuracy, 10.0, inaccuracy
+        )
     }
 }
