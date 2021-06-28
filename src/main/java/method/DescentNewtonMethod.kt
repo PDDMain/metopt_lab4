@@ -6,7 +6,13 @@ import method.minimize.Brent
 import math.matrix.Vector
 
 
-class DescentNewtonMethod : NewtonMethod {
+class DescentNewtonMethod : NewtonMethod() {
+    override fun init(function: ScalarFunction, startPoint: Vector, inaccuracy: Double): Vector {
+        val d = -function.gradient(startPoint)
+        val r = Brent().minimize(function, startPoint, d, inaccuracy)
+        return startPoint + (d * r)
+    }
+
     override fun iterationStep(
         function: ScalarFunction,
         prevPoint: Vector,

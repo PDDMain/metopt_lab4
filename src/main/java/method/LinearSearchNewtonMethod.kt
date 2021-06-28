@@ -5,7 +5,11 @@ import math.solver.LUInPlaceSolver
 import method.minimize.Brent
 import math.matrix.Vector
 
-class LinearSearchNewtonMethod : NewtonMethod {
+class LinearSearchNewtonMethod : NewtonMethod() {
+    override fun init(function: ScalarFunction, startPoint: Vector, inaccuracy: Double): Vector {
+        return startPoint
+    }
+
     override fun iterationStep(
         function: ScalarFunction,
         prevPoint: Vector,

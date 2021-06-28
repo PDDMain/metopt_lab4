@@ -4,7 +4,11 @@ import math.solver.LUInPlaceSolver
 import math.ScalarFunction
 import math.matrix.Vector
 
-class ClassicNewtonMethod : NewtonMethod {
+class ClassicNewtonMethod : NewtonMethod() {
+    override fun init(function: ScalarFunction, startPoint: Vector, inaccuracy: Double): Vector {
+        return startPoint
+    }
+
     override fun iterationStep(
         function: ScalarFunction,
         prevPoint: Vector,

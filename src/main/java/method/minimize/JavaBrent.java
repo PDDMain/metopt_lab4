@@ -10,8 +10,6 @@ public class JavaBrent {
     private static final int MAX_ITERATION = 1000;
 
     public Double minimize(Function<Double, Double> fun, double l, double r, double inaccuracy) {
-        double start_l = l;
-        double start_r = r;
         double x = (l + r) / 2.;
         double w = x;
         double v = x;
@@ -32,8 +30,6 @@ public class JavaBrent {
             if (diff(x, w, v, inaccuracy) && diff(fx, fw, fv, inaccuracy)) {
                 u = parabola(new Point(v, fv), new Point(x, fx), new Point(w, fw));
                 if ((l <= u && u <= r) && Math.abs(u - x) < g / 2) {
-                    List<Double> sortedPoints =
-                            List.of(x, v, w).stream().sorted().collect(Collectors.toList());
                     iteration++;
                     d = Math.abs(u - x);
                     success = true;
@@ -50,9 +46,7 @@ public class JavaBrent {
                 iteration++;
             }
             if (Math.abs(r - l) < inaccuracy) {
-                double minY = fun.apply(x);
-                double maxY = Math.max(fun.apply(start_l), fun.apply(start_r));
-                return minY;
+                return fun.apply(x);
             }
             double fu = fun.apply(u);
             if (fu <= fx) {

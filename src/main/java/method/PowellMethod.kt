@@ -6,9 +6,13 @@ import math.matrix.Vector
 import math.matrix.identityMatrix
 import method.minimize.Brent
 
-class PowellMethod {
-    fun minimize(function: ScalarFunction, startPoint: MutableList<Double>, inaccuracy: Double) : Vector {
-        var x = Vector(startPoint)
+class PowellMethod : MinimizeMethod {
+    override fun minimize(
+        function: ScalarFunction,
+        startPoint: Vector,
+        inaccuracy: Double
+    ): Vector {
+        var x = startPoint
         var gX = function.gradient(x)
         var d = -gX
         val g = identityMatrix(x.size())
