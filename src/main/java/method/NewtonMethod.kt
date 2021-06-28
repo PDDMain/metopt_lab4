@@ -1,16 +1,12 @@
 package method
 
 import math.ScalarFunction
+import math.matrix.Vector
 
 interface NewtonMethod {
     fun iterationStep(
         function: ScalarFunction,
-        prevPoint: MutableList<Double>,
+        prevPoint: Vector,
         inaccuracy: Double
-    ): List<List<Double>>
-
-    operator fun MutableList<Double>.unaryMinus(): MutableList<Double> {
-        return this.map { x -> -x } as MutableList<Double>
-    }
-
+    ): Vector
 }

@@ -3,32 +3,30 @@ package method
 import math.ScalarFunction
 import math.solver.LUInPlaceSolver
 import method.minimize.Brent
+import math.matrix.Vector
 
 
-class DescentNewtonMethod: NewtonMethod {
+class DescentNewtonMethod : NewtonMethod {
     override fun iterationStep(
         function: ScalarFunction,
-        prevPoint: MutableList<Double>,
+        prevPoint: Vector,
         inaccuracy: Double
-    ): List<List<Double>> {
+    ): Vector {
         val solver = LUInPlaceSolver()
 
-        val g = function.gradient(prevPoint);
-        val h = function.hessian(prevPoint);
-        val s = listOf(solver.solve(h, -g, inaccuracy));
-        val d = if (s * g < 0) {
-            s;
+        val g = function.gradient(prevPoint)
+        val h = function.hessian(prevPoint)
+
+        val s = Vector(solver.solve(h, (-g).data(), inaccuracy))
+
+        val d = if (s.scalar(g) < 0) {
+            s
         } else {
-            -g;
+            -g
         }
 
-        val r = Brent().minimize(function, prevPoint, d, inaccuracy);
-        TODO("Not yet implemented\n" +
-                "(*result.additional.rbegin())[\"foundParameter\"] =  r;\n" +
-                "        return d * r;")
-    }
+        val r = Brent().minimize(function, prevPoint, d, inaccuracy)
 
-    private operator fun <E> List<E>.times(g: E): Double {
-        TODO("Not yet implemented")
+        return d * r
     }
 }

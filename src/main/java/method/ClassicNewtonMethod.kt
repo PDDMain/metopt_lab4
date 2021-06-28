@@ -2,20 +2,19 @@ package method
 
 import math.solver.LUInPlaceSolver
 import math.ScalarFunction
+import math.matrix.Vector
 
-class ClassicNewtonMethod : NewtonMethod{
+class ClassicNewtonMethod : NewtonMethod {
     override fun iterationStep(
         function: ScalarFunction,
-        prevPoint: MutableList<Double>,
+        prevPoint: Vector,
         inaccuracy: Double
-    ): List<List<Double>> {
+    ): Vector {
         val solver = LUInPlaceSolver()
 
         val g = function.gradient(prevPoint)
         val h = function.hessian(prevPoint)
 
-        return listOf(solver.solve(h, -g, inaccuracy))
+        return Vector(solver.solve(h, (-g).data(), inaccuracy))
     }
-
-
 }

@@ -29,12 +29,13 @@ class DenseMatrix(
         }
     }
 
-    operator fun times(d: Double) {
+    operator fun times(d: Double): Matrix {
         matrix.indices.map { i ->
             matrix[i].indices.map { j ->
                 matrix[i][j] *= d
             }
         }
+        return this
     }
 
     operator fun plus(that: Matrix): DenseMatrix =
@@ -63,4 +64,19 @@ class DenseMatrix(
             }
         }
     }
+
+}
+
+fun identityMatrix(size: Int): DenseMatrix {
+    return DenseMatrix(
+        MutableList(size) { i ->
+            MutableList(size) { j ->
+                if (i == j) {
+                    1.0
+                } else {
+                    0.0
+                }
+            }
+        }
+    )
 }
