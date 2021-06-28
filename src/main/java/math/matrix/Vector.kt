@@ -56,4 +56,20 @@ class Vector(array: List<Double>) {
             }
         }
     }
+
+    override fun toString(): String {
+        return "$array"
+    }
+
+    fun equals(other: Vector, inaccuracy: Double): Boolean {
+        if (array.size != other.size()) {
+            return false
+        }
+        var d = 0.0
+        for (i in 0 until array.size) {
+            d += (array[i] - other.array[i]) * (array[i] - other.array[i])
+        }
+
+        return d <= inaccuracy * inaccuracy
+    }
 }
