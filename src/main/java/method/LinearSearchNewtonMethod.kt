@@ -1,9 +1,9 @@
 package method
 
 import math.ScalarFunction
-import math.solver.LUInPlaceSolver
 import method.minimize.Brent
 import math.matrix.Vector
+import math.solver.LUInPlaceSolver
 
 class LinearSearchNewtonMethod : NewtonMethod() {
     override fun init(function: ScalarFunction, startPoint: Vector, inaccuracy: Double): Vector {
@@ -20,7 +20,7 @@ class LinearSearchNewtonMethod : NewtonMethod() {
         val g = function.gradient(prevPoint)
         val h = function.hessian(prevPoint)
 
-        val d = Vector(solver.solve(h, (-g).data(), inaccuracy))
+        val d = solver.solve(h, -g, inaccuracy)
 
         val r = Brent().minimize(function, prevPoint, d, inaccuracy)
 

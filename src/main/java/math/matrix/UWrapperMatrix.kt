@@ -1,7 +1,7 @@
 package math.matrix
 
 class UWrapperMatrix(
-    private val matrix: Matrix
+    val matrix: Matrix
 ) : Matrix {
     override fun get(i: Int, j: Int): Double {
         return if (i > j) {

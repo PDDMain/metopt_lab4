@@ -72,4 +72,8 @@ class Vector(array: List<Double>) {
 
         return d <= inaccuracy * inaccuracy
     }
+
+    fun copy(): Vector {
+        return Vector(array.clone() as List<Double>)
+    }
 }

@@ -1,8 +1,8 @@
 package method
 
-import math.solver.LUInPlaceSolver
 import math.ScalarFunction
 import math.matrix.Vector
+import math.solver.LUInPlaceSolver
 
 class ClassicNewtonMethod : NewtonMethod() {
     override fun init(function: ScalarFunction, startPoint: Vector, inaccuracy: Double): Vector {
@@ -19,6 +19,6 @@ class ClassicNewtonMethod : NewtonMethod() {
         val g = function.gradient(prevPoint)
         val h = function.hessian(prevPoint)
 
-        return Vector(solver.solve(h, (-g).data(), inaccuracy))
+        return solver.solve(h, -g, inaccuracy)
     }
 }
