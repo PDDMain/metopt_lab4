@@ -4,40 +4,35 @@ import math.ScalarFunction
 import math.matrix.DenseMatrix
 import math.matrix.Vector
 import math.matrix.identityMatrix
-import math.solver.LUInPlaceSolver
 import method.minimize.Brent
+
 
 class DFPMethod : MinimizeMethod {
     override fun minimize(function: ScalarFunction, startPoint: Vector, inaccuracy: Double): Vector {
-        TODO("Change BFG method to DFP method")
-        val solver = LUInPlaceSolver()
-        var x = startPoint.copy()
+        var x1 = startPoint.copy()
+        val g = identityMatrix(x1.size())
+        var w1 = -function.gradient(x1)
+        var p = w1.copy()
+        var r = Brent().minimize(function, x1, p, inaccuracy)
+        var x2 = x1 + (p * r)
+        var delta = x2 - x1
+        x1 = x2.copy()
+        do {
+            val w2 = -function.gradient(x1)
+            val deltaW = w2 - w1
+            w1 = w2.copy()
+            val vk: Vector = g * deltaW
+            g -= (DenseMatrix(delta * delta) *
+                    (1.0 / (deltaW.scalar(delta)))) + (DenseMatrix(vk * vk) * (1.0 / (vk.scalar(deltaW))))
 
-        var gX = function.gradient(x)
-        var d = -gX
-        val h = identityMatrix(x.size())
-        var r = Brent().minimize(function, x, d, inaccuracy)
-        var s = d * r
 
-        while ((s.norm() > inaccuracy)) {
-            r = Brent().minimize(function, x, d, inaccuracy)
-            s = d * r
+            p = g * w2
+            r = Brent().minimize(function, x1, p, inaccuracy)
+            x2 = x1 + (p * r)
+            delta = x2 - x1
+            x1 = x2.copy()
+        } while (delta.norm() > inaccuracy)
 
-            x += s
-            val gY = gX
-            gX = function.gradient(x)
-            val p = gX - gY
-            val v = h * s
-
-            val plusH = DenseMatrix(p * p)
-            val minusH = DenseMatrix(v * v)
-
-            h += plusH * (1.0 / (p.scalar(s)))
-            h -= minusH * (1.0 / (v.scalar(s)))
-
-            d = solver.solve(h, -gX, inaccuracy)
-        }
-
-        return x
+        return x2
     }
 }
