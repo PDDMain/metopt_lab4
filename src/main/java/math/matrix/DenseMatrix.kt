@@ -3,7 +3,7 @@ package math.matrix
 import assertThrow
 
 class DenseMatrix(
-    private val matrix: MutableList<MutableList<Double>>
+    val matrix: MutableList<MutableList<Double>>
 ) : Matrix {
 
     override fun get(i: Int, j: Int): Double =
@@ -29,7 +29,7 @@ class DenseMatrix(
         }
     }
 
-    operator fun times(d: Double): Matrix {
+    operator fun times(d: Double): DenseMatrix {
         matrix.indices.map { i ->
             matrix[i].indices.map { j ->
                 matrix[i][j] *= d
@@ -65,6 +65,9 @@ class DenseMatrix(
         }
     }
 
+    operator fun times(helper: Vector): Vector {
+        return Vector(this * helper.data())
+    }
 }
 
 fun identityMatrix(size: Int): DenseMatrix {

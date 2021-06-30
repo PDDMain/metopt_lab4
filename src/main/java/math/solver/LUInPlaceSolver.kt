@@ -3,10 +3,11 @@ package math.solver
 import math.matrix.LWrapperMatrix
 import math.matrix.Matrix
 import math.matrix.UWrapperMatrix
+import math.matrix.Vector
 
 class LUInPlaceSolver : Solver<Matrix> {
 
-    fun decompose(matrix: Matrix): Pair<UWrapperMatrix, LWrapperMatrix> {
+    private fun decompose(matrix: Matrix): Pair<UWrapperMatrix, LWrapperMatrix> {
         (0 until matrix.size()).forEach { x ->
             (x until matrix.size()).forEach { j ->
                 matrix[x, j] -= (0 until x).sumOf { pX ->
@@ -26,7 +27,8 @@ class LUInPlaceSolver : Solver<Matrix> {
         return UWrapperMatrix(matrix) to LWrapperMatrix(matrix)
     }
 
-        override fun solve(matrix: Matrix, b: MutableList<Double>, eps: Double): List<Double> {
+    override fun solve(matrix: Matrix, vector: Vector, inaccuracy: Double): Vector {
+        val b = vector.data()
         val (u, l) = decompose(matrix)
 
         (0 until matrix.size()).forEach { i ->
@@ -42,6 +44,6 @@ class LUInPlaceSolver : Solver<Matrix> {
             b[i] /= u[i, i]
         }
 
-        return b
+        return Vector(b)
     }
 }

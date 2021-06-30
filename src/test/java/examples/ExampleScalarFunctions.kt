@@ -5,6 +5,30 @@ import math.matrix.DenseMatrix
 import math.matrix.Vector
 import kotlin.math.pow
 
+class F0 : ScalarFunction() {
+    override fun calc(vector: Vector): Double {
+        return 50 * vector.data()[0] * vector.data()[0] +
+                vector.data()[1] * vector.data()[1] +
+                20 * vector.data()[0] + 20 * vector.data()[1] + 239
+    }
+
+    override fun gradient(point: Vector): Vector {
+        return Vector(
+            listOf(
+                20 * (5 * point.data()[0] + 1),
+                2 * (point.data()[1] + 10)
+            )
+        )
+    }
+
+    override fun hessian(point: Vector): DenseMatrix {
+        return DenseMatrix(arrayListOf(
+            arrayListOf(100.0, 0.0),
+            arrayListOf(0.0, 2.0)
+        ))
+    }
+
+}
 
 class F1 : ScalarFunction() {
     override fun calc(vector: Vector): Double {

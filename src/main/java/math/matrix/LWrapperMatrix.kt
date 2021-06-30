@@ -1,16 +1,20 @@
 package math.matrix
 
 class LWrapperMatrix(
-    private val matrix: Matrix
+    val matrix: Matrix
 ) : Matrix {
 
     override fun get(i: Int, j: Int): Double {
-        return if (i == j) {
-            1.0
-        } else if (i < j) {
-            0.0
-        } else {
-            matrix[i, j]
+        return when {
+            i == j -> {
+                1.0
+            }
+            i < j -> {
+                0.0
+            }
+            else -> {
+                matrix[i, j]
+            }
         }
     }
 

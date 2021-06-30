@@ -1,9 +1,9 @@
 package method
 
 import math.ScalarFunction
-import math.solver.LUInPlaceSolver
 import method.minimize.Brent
 import math.matrix.Vector
+import math.solver.LUInPlaceSolver
 
 
 class DescentNewtonMethod : NewtonMethod() {
@@ -23,7 +23,7 @@ class DescentNewtonMethod : NewtonMethod() {
         val g = function.gradient(prevPoint)
         val h = function.hessian(prevPoint)
 
-        val s = Vector(solver.solve(h, (-g).data(), inaccuracy))
+        val s = solver.solve(h, -g, inaccuracy)
 
         val d = if (s.scalar(g) < 0) {
             s
